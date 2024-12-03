@@ -41,7 +41,6 @@ if next_question("What date are you available?", is_date=True):
             if next_question("Where would you like to spend the rest of the day?", 
                              options=["My House", "Open One of Your Christmas Gifts", "Take a Walk"]):
                 st.markdown(
-                    """
                     <h2 style='text-align: center;'>I LOVE YOU!</h2>
                     <h3 style='text-align: center;'>Thanks for helping me make your day better!</h3>
                     <div style='text-align: center;'>
