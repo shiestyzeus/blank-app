@@ -1,34 +1,44 @@
 import streamlit as st
 from datetime import datetime
 
-# Title
-st.title("HAPPY 3 YEAR ANNIVERSARY")
+# Set the page title and background color
+st.title("Happy 3 Year Anniversary")
+st.markdown(
+    """
+    <style>
+    .reportview-container {
+        background: linear-gradient(to right, #ff7f7f, #ffb3b3);
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
-# Question 1: Date Picker
+# Question 1: Date selection
 st.header("What date are you available?")
 date = st.date_input("Choose a date", datetime.today())
-
 if st.button("Next"):
-    # Question 2: Restaurant Choices
-    st.header("Where would you love to go out and eat?")
-    restaurants = ["Restaurant A", "Restaurant B", "Restaurant C", "Restaurant D"]
-    choice = st.selectbox("Select a restaurant", restaurants)
+    st.session_state.date = date
 
+# Question 2: Dining preference
+if 'date' in st.session_state:
+    st.header("Where would you love to go out to eat?")
+    dining_choice = st.selectbox("Choose one", ["Korean BBQ", "Pasta", "Steakhouse"])
     if st.button("Next"):
-        # Question 3: Dessert Choices
-        st.header("Where do you want to get dessert?")
-        dessert_choices = ["Ice Cream", "Boba", "Bread/Treats", "Dick"]
-        dessert = st.selectbox("Select a dessert", dessert_choices)
+        st.session_state.dining_choice = dining_choice
 
-        if st.button("Next"):
-            # Question 4: Spend the Day
-            st.header("Where would you like to spend the rest of the day?")
-            day_choices = ["My House", "Open one of your Christmas gifts", "Take a walk"]
-            day_choice = st.selectbox("Select an option", day_choices)
+# Question 3: Dessert preference
+if 'dining_choice' in st.session_state:
+    st.header("Where do you want to get dessert?")
+    dessert_choice = st.selectbox("Choose one", ["Ice Cream", "Boba", "Bread/Treats", "Dick"])
+    if st.button("Next"):
+        st.session_state.dessert_choice = dessert_choice
 
-            if st.button("Finish"):
-                # Thank You Message
-                st.header("I LOVE YOU!")
-                st.write("Thanks for helping me make your day better!")
-                st.markdown("<h1 style='text-align: center; color: pink;'>🌸🌸🌸</h1>", unsafe_allow_html=True)
-                st.markdown("<h1 style='text-align: center; color: red;'>❤️❤️❤️</h1>", unsafe_allow_html=True)
+# Question 4: Day preference
+if 'dessert_choice' in st.session_state:
+    st.header("Where would you like to spend the rest of the day?")
+    day_choice = st.selectbox("Choose one", ["My House", "Christmas in the Park", "Take a Walk"])
+    if st.button("Finish"):
+        st.session_state.day_choice = day_choice
+        st.balloons()
+        st.markdown("I love you! Thanks for helping me make your day better! 🌸❤️")
