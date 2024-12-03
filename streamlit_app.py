@@ -14,31 +14,50 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Question 1: Date selection
+# Question 1: Date Availability
 st.header("What date are you available?")
 date = st.date_input("Choose a date", datetime.today())
 if st.button("Next"):
     st.session_state.date = date
 
-# Question 2: Dining preference
+# Question 2: Where to eat
 if 'date' in st.session_state:
-    st.header("Where would you love to go out to eat?")
-    dining_choice = st.selectbox("Choose one", ["Korean BBQ", "Pasta", "Steakhouse"])
+    st.header("Where would you love to go out and eat?")
+    choice = st.radio("Choose one:", ("Korean BBQ", "Pasta", "Steakhouse"))
+    if choice == "Korean BBQ":
+        st.balloons()
+        st.image("https://example.com/smiley_face.png", width=200)
     if st.button("Next"):
-        st.session_state.dining_choice = dining_choice
+        st.session_state.choice = choice
 
-# Question 3: Dessert preference
-if 'dining_choice' in st.session_state:
+# Question 3: Dessert
+if 'choice' in st.session_state:
     st.header("Where do you want to get dessert?")
-    dessert_choice = st.selectbox("Choose one", ["Ice Cream", "Boba", "Bread/Treats", "Dick"])
+    dessert_choice = st.radio("Choose one:", ("Ice Cream", "Boba", "Bread/Treats", "Dick"))
     if st.button("Next"):
         st.session_state.dessert_choice = dessert_choice
 
-# Question 4: Day preference
+# Question 4: Spend the day
 if 'dessert_choice' in st.session_state:
     st.header("Where would you like to spend the rest of the day?")
-    day_choice = st.selectbox("Choose one", ["My House", "Christmas in the Park", "Take a Walk"])
-    if st.button("Finish"):
+    day_choice = st.radio("Choose one:", ("My House", "Christmas in the Park", "Take a Walk"))
+    if st.button("Next"):
         st.session_state.day_choice = day_choice
-        st.balloons()
-        st.markdown("I love you! Thanks for helping me make your day better! 🌸❤️")
+
+# Final Message
+if 'day_choice' in st.session_state:
+    st.header("I love you! Thanks for helping me make your day better!")
+    st.markdown(
+        """
+        <style>
+        .flowers {
+            background-image: url('https://example.com/flowers_background.png');
+            background-size: cover;
+            height: 100vh;
+        }
+        </style>
+        <div class="flowers"></div>
+        """,
+        unsafe_allow_html=True
+    )
+    st.balloons()
