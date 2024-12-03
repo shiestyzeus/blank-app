@@ -27,6 +27,8 @@ if 'date' in st.session_state:
     if choice == "Korean BBQ":
         st.balloons()
         st.image("https://example.com/smiley_face.png", width=200)
+        if st.button("Next"):
+    st.write("You clicked the Next button!")
         st.session_state.choice = choice
 
 # Question 3: Dessert
