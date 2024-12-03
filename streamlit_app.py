@@ -1,28 +1,55 @@
 import streamlit as st
+import datetime
+# Title of the app
+st.title("3 Year Anniversary Questionnaire")
 
-st.title("A Special Test for My Girlfriend")
-st.header("Welcome to Your Special Test!")
-st.write("Let's see how well you know me.")
-questions = {
-    "What is my favorite color?": ["Red", "Blue", "Green", "Yellow"],
-    "What is my favorite food?": ["Pizza", "Sushi", "Burger", "Pasta"],
-    "Where did we first meet?": ["School", "Park", "Cafe", "Library"],
-    "What is my favorite movie?": ["Inception", "Titanic", "Avatar", "The Matrix"],
-}
+# Initialize session state
+if 'question_index' not in st.session_state:
+    st.session_state.question_index = 0
+    st.session_state.answers = {}
 
-score = 0
+# Questions list
+questions = [
+    "Do you love me? (Answer 'yes' or 'no')",
+    "What's your favorite thing about me?",
+    "What day are you available to hang out?",
+    "Choose where you want to eat:",
+    "Choose where you want to get dessert:",
+]
 
-for question, options in questions.items():
-    answer = st.radio(question, options)
-    if answer == options[0]:  # Assuming the first option is the correct answer
-        score += 1
+# Function to display the current question
+def display_question():
+    if st.session_state.question_index < len(questions):
+        question = questions[st.session_state.question_index]
+        if question == questions[0]:
+            answer = st.text_input(question)
+            if answer.lower() == 'yes':
+                st.session_state.answers[question] = answer
+                st.session_state.question_index += 1
+        elif question == questions[1]:
+            answer = st.text_input(question)
+            if answer:
+                st.session_state.answers[question] = answer
+                st.session_state.question_index += 1
+        elif question == questions[2]:
+            answer = st.date_input(question)
+            st.session_state.answers[question] = answer
+            st.session_state.question_index += 1
+        elif question == questions[3]:
+            answer = st.selectbox(question, ["Italian", "Chinese", "Mexican", "Indian"])
+            st.session_state.answers[question] = answer
+            st.session_state.question_index += 1
+        elif question == questions[4]:
+            answer = st.selectbox(question, ["Ice Cream", "Cake", "Cookies", "Brownies"])
+            st.session_state.answers[question] = answer
+            st.session_state.question_index += 1
 
-if st.button("Submit"):
-    st.write(f"Your score is: {score}/{len(questions)}")
-    if score == len(questions):
-        st.success("Perfect score! You really know me well!")
-    else:
-        st.warning("Good try! But there's always room for improvement.")
+# Display the current question
+display_question()
 
-st.sidebar.header("About Us")
-st.sidebar.write("This test is a fun way to celebrate our relationship!")
+# Final message
+if st.session_state.question_index == len(questions):
+    st.write("Appointment booked! Cya soon! 🌹❤️")
+    st.write("Your answers:")
+    for q, a in st.session_state.answers.items():
+        st.write(f"{q}: {a}")
