@@ -1,42 +1,32 @@
 import streamlit as st
-import pandas as pd
 from datetime import datetime
-import calendar
+import requests
 
-# Initialize session state to store answers
-if 'answers' not in st.session_state:
-    st.session_state.answers = []
+# Function to display the GIF
+def display_gif(gif_url):
+    st.image(gif_url, use_column_width=True)
 
-# Function to display questions
-def display_question(question, input_type='text', options=None):
-    st.write(question)
-    if input_type == 'text':
-        answer = st.text_input("Your answer:")
-    elif input_type == 'date':
-        answer = st.date_input("Choose a date:", datetime.now())
-    elif input_type == 'select':
-        answer = st.selectbox("Choose an option:", options)
-    else:
-        answer = None
+# Page 1: Availability Question
+st.title("3 Year Anniversary Questionnaire")
+st.header("Question #1")
+st.write("Are you available on...")
 
+# Calendar for date selection
+date = st.date_input("Select a date:", datetime.now())
+
+# Display the GIF in the middle
+gif_url_1 = "https://media.tenor.com/images/1c1e1c1e1c1e1c1e1c1e1c1e1c1e1c1e/tenor.gif"
+display_gif(gif_url_1)
+
+# Next button to proceed to the next question
+if st.button("Next"):
+    st.session_state.page = 2
+
+# Page 2: Thank You Message
+if 'page' in st.session_state and st.session_state.page == 2:
+    st.header("Thank You!")
+    gif_url_2 = "https://media.tenor.com/images/2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d2d/tenor.gif"
+    display_gif(gif_url_2)
+    
     if st.button("Next"):
-        if answer:
-            st.session_state.answers.append(answer)
-            return True
-    return False
-
-# Question 1
-if display_question("Do you love me?", input_type='text'):
-    # Question 2
-    if display_question("What's your favorite thing about me?"):
-        # Question 3
-        if display_question("What day are you available to hang out?", input_type='date'):
-            # Question 4
-            if display_question("Choose where you wanna eat:", input_type='select', options=["KBBQ", "Steakhouse", "Other"]):
-                # Question 5
-                if display_question("Choose where you want to get dessert:", input_type='select', options=["Ice Cream Shop", "Bakery", "Other"]):
-                    # Final message
-                    st.write("Appointment booked! Cya soon! 🌸❤️")
-                    st.write("Your answers:")
-                    st.write(st.session_state.answers)
-                    st.balloons()
+        st.write("Looking forward to our special day!")
