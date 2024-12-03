@@ -1,55 +1,56 @@
 import streamlit as st
-import datetime
-# Title of the app
-st.title("3 Year Anniversary Questionnaire")
+import pandas as pd
+from datetime import datetime
+# Initialize session state to store answers
+if 'answers' not in st.session_state:
+    st.session_state.answers = []
 
-# Initialize session state
-if 'question_index' not in st.session_state:
-    st.session_state.question_index = 0
-    st.session_state.answers = {}
+# Function to display questions
+def display_question(question, options=None, input_type='text'):
+    st.write(question)
+    if input_type == 'text':
+        answer = st.text_input("Your answer:")
+    elif input_type == 'date':
+        answer = st.date_input("Choose a date:", datetime.today())
+    elif input_type == 'select':
+        answer = st.selectbox("Choose an option:", options)
+    else:
+        answer = None
 
-# Questions list
-questions = [
-    "Do you love me? (Answer 'yes' or 'no')",
-    "What's your favorite thing about me?",
-    "What day are you available to hang out?",
-    "Choose where you want to eat:",
-    "Choose where you want to get dessert:",
-]
+    if st.button("Next"):
+        if answer:
+            st.session_state.answers.append(answer)
+            return True
+    return False
 
-# Function to display the current question
-def display_question():
-    if st.session_state.question_index < len(questions):
-        question = questions[st.session_state.question_index]
-        if question == questions[0]:
-            answer = st.text_input(question)
-            if answer.lower() == 'yes':
-                st.session_state.answers[question] = answer
-                st.session_state.question_index += 1
-        elif question == questions[1]:
-            answer = st.text_input(question)
-            if answer:
-                st.session_state.answers[question] = answer
-                st.session_state.question_index += 1
-        elif question == questions[2]:
-            answer = st.date_input(question)
-            st.session_state.answers[question] = answer
-            st.session_state.question_index += 1
-        elif question == questions[3]:
-            answer = st.selectbox(question, ["Italian", "Chinese", "Mexican", "Indian"])
-            st.session_state.answers[question] = answer
-            st.session_state.question_index += 1
-        elif question == questions[4]:
-            answer = st.selectbox(question, ["Ice Cream", "Cake", "Cookies", "Brownies"])
-            st.session_state.answers[question] = answer
-            st.session_state.question_index += 1
+# Question 1
+if display_question("Do you love me?", input_type='text'):
+    st.session_state.current_question = 2
 
-# Display the current question
-display_question()
+# Question 2
+if st.session_state.get('current_question', 1) == 2:
+    if display_question("What's your favorite thing about me?"):
+        st.session_state.current_question = 3
 
-# Final message
-if st.session_state.question_index == len(questions):
+# Question 3
+if st.session_state.get('current_question', 1) == 3:
+    if display_question("What day are you available to hang out?", input_type='date'):
+        st.session_state.current_question = 4
+
+# Question 4
+if st.session_state.get('current_question', 1) == 4:
+    if display_question("Choose where you wanna eat:", options=["KBBQ", "Steakhouse", "Other"], input_type='select'):
+        st.session_state.current_question = 5
+
+# Question 5
+if st.session_state.get('current_question', 1) == 5:
+    dessert_places = ["Ice Cream Shop", "Bakery", "Chocolate Factory"]
+    if display_question("Choose where you want to get dessert:", options=dessert_places, input_type='select'):
+        st.session_state.current_question = 6
+
+# Final Message
+if st.session_state.get('current_question', 1) == 6:
     st.write("Appointment booked! Cya soon! 🌹❤️")
+    st.balloons()
     st.write("Your answers:")
-    for q, a in st.session_state.answers.items():
-        st.write(f"{q}: {a}")
+    st.write(st.session_state.answers)
