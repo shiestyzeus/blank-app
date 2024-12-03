@@ -4,23 +4,23 @@ import datetime
 # Title
 st.title("HAPPY 3 YEAR ANNIVERSARY ❤️")
 
-# Start Button
-if st.button("CLICK START TO BEGIN"):
-    # First Question
+# Start button
+if st.button("START"):
+    # First question
     date = st.date_input("What day are you available?", datetime.date.today())
     
-    # Second Question
+    # Second question
     food_choice = st.selectbox("Where would you want to go eat?", 
                                 ["KOREAN BBQ", "PASTA", "STEAKHOUSE"])
     
-    # Third Question
+    # Third question
     dessert_choice = st.selectbox("Where do you want to get for dessert?", 
                                    ["ICE CREAM", "BOBA", "DICK"])
     
-    # Final Question
+    # Final question
     activity_choice = st.selectbox("Where do you want to go once we finish?", 
                                     ["CHRISTMAS IN THE PARK", "IN MY ROOM CUDDLED UP"])
     
-    # Thank You Message
-    st.write("Thank you for helping me plan our special day! ❤️🌸")
+    # Thank you message
+    st.markdown("Thank you for helping me plan our special day! ❤️🌸")
     st.balloons()
